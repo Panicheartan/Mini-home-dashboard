@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     
     steps:
       - name: Checkout code
@@ -28,22 +28,11 @@ jobs:
         working-directory: ./app
         run: npm run build
       
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.NAS_SSH_KEY }}
-          log-public-key: false
-      
-      - name: Add NAS to known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H 192.168.1.6 >> ~/.ssh/known_hosts
-      
       - name: Deploy to NAS
         run: |
           echo "开始部署到 NAS..."
-          rsync -avz --delete \
-            -e "ssh -o StrictHostKeyChecking=no" \
-            app/dist/ \
-            admin@192.168.1.6:/share/Public/mini-home/
+          # 直接复制到挂载的目录
+          mkdir -p /share/Public/mini-home
+          cp -r app/dist/* /share/Public/mini-home/
+          chmod -R 755 /share/Public/mini-home
           echo "部署完成！"
