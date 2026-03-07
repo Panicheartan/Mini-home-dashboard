@@ -58,7 +58,6 @@ const dockerApps: AppService[] = [
   { name: 'Radarr', address: '192.168.1.6:7878', description: '电影管理', icon: Film, color: 'from-yellow-500 to-yellow-600', href: 'http://192.168.1.6:7878' },
   { name: 'Bazarr', address: '192.168.1.6:6767', description: '字幕管理', icon: Subtitles, color: 'from-orange-500 to-orange-600', href: 'http://192.168.1.6:6767' },
   { name: 'Home Assistant', address: '192.168.1.6:8123', description: '智能家居', icon: Home, color: 'from-blue-600 to-blue-700', href: 'http://192.168.1.6:8123' },
-  { name: 'WatchYourLAN', address: '192.168.1.6:8840', description: '网络监控', icon: Wifi, color: 'from-teal-500 to-teal-600', href: 'http://192.168.1.6:8840' },
   { name: 'Mini-Home', address: '192.168.1.6:3003', description: '家庭导航页', icon: Globe, color: 'from-pink-500 to-rose-500', href: 'http://192.168.1.6:3003' },
   { name: 'n8n', address: '192.168.1.6:3001', description: '工作流自动化', icon: Workflow, color: 'from-orange-600 to-red-600', href: 'http://192.168.1.6:3001' },
   { name: 'Open WebUI', address: '192.168.1.6:3000', description: 'AI聊天界面', icon: Bot, color: 'from-indigo-500 to-violet-500', href: 'http://192.168.1.6:3000' },
