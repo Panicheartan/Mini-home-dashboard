@@ -28,6 +28,9 @@ import {
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeToggle } from './components/ThemeToggle';
+import { HeartHealth } from './components/stardew/HeartHealth';
+import { GoldDisplay } from './components/stardew/GoldDisplay';
+import { StardewTime } from './components/stardew/StardewTime';
 import { LoginPage } from './components/LoginPage';
 import { WebsitesPage } from './components/WebsitesPage';
 import { CategoryDetailPage } from './components/CategoryDetailPage';
@@ -429,6 +432,23 @@ function Dashboard() {
               color="from-pink-500 to-rose-500"
               index={3}
             />
+          </div>
+
+          {/* Stardew Valley Status Bar */}
+          <div className={`flex flex-wrap items-center justify-between gap-4 p-4 mb-8 rounded-2xl border-2 ${
+            isDark 
+              ? 'bg-gradient-to-r from-amber-900/30 to-orange-900/30 border-amber-700/50' 
+              : 'bg-gradient-to-r from-amber-100 to-orange-100 border-amber-300'
+          }`}>
+            <div className="flex items-center gap-4">
+              <GoldDisplay amount={totalDockerApps * 100 + totalApps * 50} />
+              <div className={`w-px h-8 ${isDark ? 'bg-amber-700/50' : 'bg-amber-300'}`} />
+              <StardewTime />
+            </div>
+            <div className="flex items-center gap-4">
+              <span className={`text-sm ${isDark ? 'text-amber-300' : 'text-amber-800'}`}>系统健康度</span>
+              <HeartHealth health={95} size="md" />
+            </div>
           </div>
 
           {/* Main Bento Grid */}
