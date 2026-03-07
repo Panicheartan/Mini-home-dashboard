@@ -57,7 +57,6 @@ const dockerApps: AppService[] = [
   { name: 'Sonarr', address: '192.168.1.6:8989', description: '电视剧管理', icon: Play, color: 'from-indigo-500 to-indigo-600', href: 'http://192.168.1.6:8989' },
   { name: 'Radarr', address: '192.168.1.6:7878', description: '电影管理', icon: Film, color: 'from-yellow-500 to-yellow-600', href: 'http://192.168.1.6:7878' },
   { name: 'Bazarr', address: '192.168.1.6:6767', description: '字幕管理', icon: Subtitles, color: 'from-orange-500 to-orange-600', href: 'http://192.168.1.6:6767' },
-  { name: 'Overseerr', address: '192.168.1.6:5055', description: '媒体请求', icon: Search, color: 'from-purple-500 to-purple-600', href: 'http://192.168.1.6:5055' },
   { name: 'Home Assistant', address: '192.168.1.6:8123', description: '智能家居', icon: Home, color: 'from-blue-600 to-blue-700', href: 'http://192.168.1.6:8123' },
   { name: 'WatchYourLAN', address: '192.168.1.6:8840', description: '网络监控', icon: Wifi, color: 'from-teal-500 to-teal-600', href: 'http://192.168.1.6:8840' },
   { name: 'Mini-Home', address: '192.168.1.6:3003', description: '家庭导航页', icon: Globe, color: 'from-pink-500 to-rose-500', href: 'http://192.168.1.6:3003' },
@@ -79,7 +78,6 @@ const macStudioApps: AppService[] = [
   { name: 'Gitea', address: '192.168.1.102:3001', description: '私有Git仓库', icon: Globe, color: 'from-blue-500 to-cyan-500', href: 'http://192.168.1.102:3001' },
   { name: 'Camunda', address: '192.168.1.102:8091', description: 'BPM工作流', icon: Workflow, color: 'from-orange-500 to-red-500', href: 'http://192.168.1.102:8091' },
   { name: 'Flowable', address: '192.168.1.102:8092', description: '工作流引擎', icon: Activity, color: 'from-green-500 to-emerald-500', href: 'http://192.168.1.102:8092/flowable-ui/' },
-  { name: 'ChatDev', address: '192.168.1.102:5173', description: 'AI开发助手', icon: Container, color: 'from-cyan-500 to-teal-500', href: 'http://192.168.1.102:5173' },
   // Second Brain & OpenCode
   { name: 'Second Brain', address: '192.168.1.102:3456', description: '知识库系统', icon: LayoutGrid, color: 'from-pink-500 to-rose-500', href: 'http://192.168.1.102:3456' },
   { name: 'Mission Control', address: '192.168.1.102:3456/mission-control-live', description: '系统监控仪表板', icon: Gauge, color: 'from-indigo-500 to-violet-500', href: 'http://192.168.1.102:3456/mission-control-live' },
