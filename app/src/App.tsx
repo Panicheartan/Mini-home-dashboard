@@ -103,7 +103,7 @@ function AnimatedCard({ children, index, className = '' }: { children: React.Rea
   );
 }
 
-// Device card - enhanced with better visuals
+// Device card - unified spacing and sizing
 function DeviceCard({ device, index }: { device: NetworkDevice; index: number }) {
   const Icon = device.icon;
   const { theme } = useTheme();
@@ -121,12 +121,12 @@ function DeviceCard({ device, index }: { device: NetworkDevice; index: number })
             : 'bg-white/70 border border-slate-200/80 hover:border-slate-300 hover:bg-white/90'
         } backdrop-blur-sm hover:shadow-lg hover:shadow-slate-500/10 hover:-translate-y-0.5`}
       >
-        {/* Subtle gradient overlay on hover */}
+        {/* Gradient overlay on hover */}
         <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
           isDark ? 'bg-gradient-to-r from-slate-800/50 to-transparent' : 'bg-gradient-to-r from-slate-50/50 to-transparent'
         }`} />
         
-        {/* Icon container with enhanced styling */}
+        {/* Icon container - unified size */}
         <div className={`relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${device.color} shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300`}>
           <Icon className="h-6 w-6 text-white" />
           {/* Status indicator */}
@@ -134,13 +134,13 @@ function DeviceCard({ device, index }: { device: NetworkDevice; index: number })
         </div>
         
         <div className="relative flex-1 min-w-0">
-          <h3 className={`text-sm font-semibold truncate ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
+          <h3 className={`text-sm font-semibold leading-tight truncate ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
             {device.name}
           </h3>
-          <p className={`text-xs truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+          <p className={`text-xs leading-tight truncate mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
             {device.description}
           </p>
-          <p className={`text-[10px] font-mono mt-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+          <p className={`text-xs font-mono leading-tight truncate mt-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
             {device.address}
           </p>
         </div>
@@ -156,8 +156,8 @@ function DeviceCard({ device, index }: { device: NetworkDevice; index: number })
   );
 }
 
-// App card - horizontal layout with enhanced visuals
-function AppCard({ app, index, compact = false }: { app: AppService; index: number; compact?: boolean }) {
+// App card - unified sizing and spacing
+function AppCard({ app, index }: { app: AppService; index: number }) {
   const Icon = app.icon;
   const { theme } = useTheme();
   const isDark = theme === 'dark';
@@ -168,7 +168,7 @@ function AppCard({ app, index, compact = false }: { app: AppService; index: numb
         href={app.href}
         target="_blank"
         rel="noopener noreferrer"
-        className={`group relative flex items-center gap-3 p-3 rounded-xl transition-all duration-300 overflow-hidden ${
+        className={`group relative flex items-center gap-3 p-4 rounded-xl transition-all duration-300 overflow-hidden ${
           isDark
             ? 'bg-slate-900/60 border border-slate-700/50 hover:border-slate-500/50 hover:bg-slate-800/60'
             : 'bg-white/70 border border-slate-200/80 hover:border-slate-300 hover:bg-white/90'
@@ -178,15 +178,15 @@ function AppCard({ app, index, compact = false }: { app: AppService; index: numb
           isDark ? 'bg-gradient-to-r from-slate-800/50 to-transparent' : 'bg-gradient-to-r from-slate-50/50 to-transparent'
         }`} />
         
-        <div className={`relative flex shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${app.color} shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300 ${compact ? 'h-9 w-9' : 'h-10 w-10'}`}>
-          <Icon className={`text-white ${compact ? 'h-4 w-4' : 'h-5 w-5'}`} />
+        <div className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${app.color} shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300`}>
+          <Icon className="h-5 w-5 text-white" />
         </div>
         
         <div className="relative flex-1 min-w-0">
-          <h3 className={`text-sm font-medium truncate ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
+          <h3 className={`text-sm font-medium leading-tight truncate ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
             {app.name}
           </h3>
-          <p className={`text-xs truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+          <p className={`text-xs leading-tight truncate mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
             {app.description}
           </p>
         </div>
@@ -195,7 +195,7 @@ function AppCard({ app, index, compact = false }: { app: AppService; index: numb
   );
 }
 
-// Site card - compact link cards
+// Site card - consistent compact layout
 function SiteCard({ site, categoryId, index }: { site: Site; categoryId: string; index: number }) {
   const color = getSiteColor(site.url);
   const { isPinned, pinSite, unpinSite } = usePinnedSites();
@@ -216,10 +216,10 @@ function SiteCard({ site, categoryId, index }: { site: Site; categoryId: string;
               : 'bg-white/70 border border-slate-200/80 hover:border-slate-300 hover:bg-white/90'
           } backdrop-blur-sm hover:shadow-md hover:-translate-y-0.5`}
         >
-          <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${color} shadow-md`}>
+          <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${color} shadow-md`}>
             <span className="text-xs font-bold text-white">{getSiteInitial(site.name)}</span>
           </div>
-          <span className={`text-sm truncate ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
+          <span className={`text-sm leading-tight truncate ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
             {site.name}
           </span>
         </a>
@@ -229,7 +229,7 @@ function SiteCard({ site, categoryId, index }: { site: Site; categoryId: string;
             if (pinned) unpinSite(site.url, categoryId);
             else pinSite({ name: site.name, url: site.url, categoryId, subCategoryId: '' });
           }}
-          className={`absolute top-1.5 right-1.5 p-1.5 rounded-lg transition-all duration-200 ${
+          className={`absolute top-2 right-2 p-1.5 rounded-lg transition-all duration-200 ${
             pinned
               ? 'text-indigo-500 opacity-100'
               : `${isDark ? 'text-slate-500 hover:text-slate-300' : 'text-slate-400 hover:text-slate-600'} opacity-0 group-hover:opacity-100`
@@ -242,14 +242,14 @@ function SiteCard({ site, categoryId, index }: { site: Site; categoryId: string;
   );
 }
 
-// Section header component - enhanced
+// Section header component - unified spacing
 function SectionHeader({ icon: Icon, title, count, className = '' }: { icon: React.ElementType; title: string; count?: number; className?: string }) {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
   return (
     <div className={`flex items-center gap-3 mb-4 ${className}`}>
-      <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+      <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${
         isDark 
           ? 'bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50' 
           : 'bg-gradient-to-br from-slate-100 to-white border border-slate-200/80'
@@ -270,11 +270,11 @@ function SectionHeader({ icon: Icon, title, count, className = '' }: { icon: Rea
   );
 }
 
-// Stats card component
-function StatsCard({ icon: Icon, label, value, color, index }: { 
-  icon: React.ElementType; 
-  label: string; 
-  value: string; 
+// Stats card component - unified sizing
+function StatsCard({ icon: Icon, label, value, color, index }: {
+  icon: React.ElementType;
+  label: string;
+  value: string;
   color: string;
   index: number;
 }) {
@@ -283,7 +283,7 @@ function StatsCard({ icon: Icon, label, value, color, index }: {
   
   return (
     <AnimatedCard index={index}>
-      <div className={`group p-4 rounded-2xl transition-all duration-300 ${
+      <div className={`group p-4 rounded-xl transition-all duration-300 ${
         isDark
           ? 'bg-slate-900/60 border border-slate-700/50'
           : 'bg-white/70 border border-slate-200/80'
@@ -293,8 +293,8 @@ function StatsCard({ icon: Icon, label, value, color, index }: {
             <Icon className="h-5 w-5 text-white" />
           </div>
           <div>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{label}</p>
-            <p className={`text-lg font-bold ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{value}</p>
+            <p className={`text-xs leading-tight ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{label}</p>
+            <p className={`text-lg font-bold leading-tight mt-0.5 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{value}</p>
           </div>
         </div>
       </div>
@@ -511,7 +511,7 @@ function Dashboard() {
                   <SectionHeader icon={HardDrive} title="NAS" count={nasApps.length} />
                   <div className="space-y-2">
                     {nasApps.map((app, index) => (
-                      <AppCard key={app.name} app={app} index={index} compact />
+                      <AppCard key={app.name} app={app} index={index} />
                     ))}
                   </div>
                 </section>
@@ -524,7 +524,7 @@ function Dashboard() {
                   <SectionHeader icon={Monitor} title="Mac Studio" count={macStudioApps.length} />
                   <div className="space-y-2">
                     {macStudioApps.map((app, index) => (
-                      <AppCard key={app.name} app={app} index={index} compact />
+                      <AppCard key={app.name} app={app} index={index} />
                     ))}
                   </div>
                 </section>
