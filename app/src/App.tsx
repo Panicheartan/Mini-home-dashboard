@@ -115,11 +115,7 @@ function DeviceCard({ device, index }: { device: NetworkDevice; index: number })
         href={device.href}
         target="_blank"
         rel="noopener noreferrer"
-        className={`group relative flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 overflow-hidden ${
-          isDark
-            ? 'bg-slate-900/60 border border-slate-700/50 hover:border-slate-500/50 hover:bg-slate-800/60'
-            : 'bg-white/70 border border-slate-200/80 hover:border-slate-300 hover:bg-white/90'
-        } backdrop-blur-sm hover:shadow-lg hover:shadow-slate-500/10 hover:-translate-y-0.5`}
+        className={`card-hover group relative flex items-center gap-4 p-4 rounded-2xl overflow-hidden hover:-translate-y-0.5`}
       >
         {/* Gradient overlay on hover */}
         <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
@@ -168,11 +164,7 @@ function AppCard({ app, index }: { app: AppService; index: number }) {
         href={app.href}
         target="_blank"
         rel="noopener noreferrer"
-        className={`group relative flex items-center gap-3 p-4 rounded-xl transition-all duration-300 overflow-hidden ${
-          isDark
-            ? 'bg-slate-900/60 border border-slate-700/50 hover:border-slate-500/50 hover:bg-slate-800/60'
-            : 'bg-white/70 border border-slate-200/80 hover:border-slate-300 hover:bg-white/90'
-        } backdrop-blur-sm hover:shadow-lg hover:shadow-slate-500/10 hover:-translate-y-0.5`}
+        className={`card-hover group relative flex items-center gap-3 p-4 rounded-xl overflow-hidden hover:-translate-y-0.5`}
       >
         <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
           isDark ? 'bg-gradient-to-r from-slate-800/50 to-transparent' : 'bg-gradient-to-r from-slate-50/50 to-transparent'
@@ -210,11 +202,7 @@ function SiteCard({ site, categoryId, index }: { site: Site; categoryId: string;
           href={site.url}
           target="_blank"
           rel="noopener noreferrer"
-          className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-300 ${
-            isDark
-              ? 'bg-slate-900/60 border border-slate-700/50 hover:border-slate-500/50 hover:bg-slate-800/60'
-              : 'bg-white/70 border border-slate-200/80 hover:border-slate-300 hover:bg-white/90'
-          } backdrop-blur-sm hover:shadow-md hover:-translate-y-0.5`}
+          className={`card-hover flex items-center gap-3 p-3 rounded-xl hover:-translate-y-0.5`}
         >
           <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${color} shadow-md`}>
             <span className="text-xs font-bold text-white">{getSiteInitial(site.name)}</span>
@@ -283,11 +271,7 @@ function StatsCard({ icon: Icon, label, value, color, index }: {
   
   return (
     <AnimatedCard index={index}>
-      <div className={`group p-4 rounded-xl transition-all duration-300 ${
-        isDark
-          ? 'bg-slate-900/60 border border-slate-700/50'
-          : 'bg-white/70 border border-slate-200/80'
-      } backdrop-blur-sm hover:shadow-lg hover:-translate-y-0.5`}>
+      <div className="card-hover group p-4 rounded-xl">
         <div className="flex items-center gap-3">
           <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${color} shadow-md group-hover:shadow-lg transition-all duration-300`}>
             <Icon className="h-5 w-5 text-white" />
@@ -451,11 +435,7 @@ function Dashboard() {
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
             {/* Left column - Network Devices (xl:col-span-3) */}
             <div className="xl:col-span-3 space-y-6">
-              <section className={`p-5 rounded-3xl ${
-                isDark 
-                  ? 'bg-slate-900/40 border border-slate-800/50' 
-                  : 'bg-white/50 border border-slate-200/80'
-              } backdrop-blur-sm`}>
+              <section className="card-bento p-5">
                 <SectionHeader icon={LayoutGrid} title="网络设备" count={networkDevices.length} />
                 <div className="space-y-3">
                   {networkDevices.map((device, index) => (
@@ -465,11 +445,7 @@ function Dashboard() {
               </section>
 
               {/* Quick Links - Compact */}
-              <section className={`p-5 rounded-3xl ${
-                isDark 
-                  ? 'bg-slate-900/40 border border-slate-800/50' 
-                  : 'bg-white/50 border border-slate-200/80'
-              } backdrop-blur-sm`}>
+              <section className="card-bento p-5">
                 <div className="flex items-center justify-between mb-4">
                   <SectionHeader icon={Globe} title="常用网站" className="mb-0" />
                   <Link to="/websites" className={`text-xs font-medium ${
@@ -488,11 +464,7 @@ function Dashboard() {
 
             {/* Middle column - Docker Apps (xl:col-span-5) */}
             <div className="xl:col-span-5 space-y-6">
-              <section className={`p-5 rounded-3xl ${
-                isDark 
-                  ? 'bg-slate-900/40 border border-slate-800/50' 
-                  : 'bg-white/50 border border-slate-200/80'
-              } backdrop-blur-sm`}>
+              <section className="card-bento p-5">
                 <SectionHeader icon={Layers} title="Docker 服务" count={dockerApps.length} />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {dockerApps.map((app, index) => (
@@ -503,11 +475,7 @@ function Dashboard() {
 
               {/* NAS & Mac Studio - Side by side */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <section className={`p-5 rounded-3xl ${
-                  isDark 
-                    ? 'bg-slate-900/40 border border-slate-800/50' 
-                    : 'bg-white/50 border border-slate-200/80'
-                } backdrop-blur-sm`}>
+                <section className="card-bento p-5">
                   <SectionHeader icon={HardDrive} title="NAS" count={nasApps.length} />
                   <div className="space-y-2">
                     {nasApps.map((app, index) => (
@@ -516,11 +484,7 @@ function Dashboard() {
                   </div>
                 </section>
 
-                <section className={`p-5 rounded-3xl ${
-                  isDark 
-                    ? 'bg-slate-900/40 border border-slate-800/50' 
-                    : 'bg-white/50 border border-slate-200/80'
-                } backdrop-blur-sm`}>
+                <section className="card-bento p-5">
                   <SectionHeader icon={Monitor} title="Mac Studio" count={macStudioApps.length} />
                   <div className="space-y-2">
                     {macStudioApps.map((app, index) => (
@@ -534,11 +498,7 @@ function Dashboard() {
             {/* Right column - Extended Quick Links or additional info (xl:col-span-4) */}
             <div className="xl:col-span-4 space-y-6">
               {/* System Status Panel */}
-              <section className={`p-5 rounded-3xl ${
-                isDark 
-                  ? 'bg-gradient-to-br from-slate-900/60 to-slate-800/40 border border-slate-700/50' 
-                  : 'bg-gradient-to-br from-white/80 to-slate-50/60 border border-slate-200/80'
-              } backdrop-blur-sm`}>
+              <section className="card-feature p-5">
                 <SectionHeader icon={Activity} title="系统状态" />
                 <div className="space-y-4">
                   <div className={`p-4 rounded-2xl ${
@@ -594,11 +554,7 @@ function Dashboard() {
               </section>
 
               {/* More Quick Links */}
-              <section className={`p-5 rounded-3xl ${
-                isDark 
-                  ? 'bg-slate-900/40 border border-slate-800/50' 
-                  : 'bg-white/50 border border-slate-200/80'
-              } backdrop-blur-sm`}>
+              <section className="card-bento p-5">
                 <div className="flex items-center justify-between mb-4">
                   <SectionHeader icon={Globe} title="更多网站" className="mb-0" />
                   <Link to="/websites" className={`text-xs font-medium ${

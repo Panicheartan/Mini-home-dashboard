@@ -5,40 +5,63 @@
 @layer base {
   :root {
     /* ========================================
-       Apple-Inspired Color System 2025
-       Harmonious, refined, accessible
+       Refined Color System 2025
+       Inspired by Apple Design & Glassmorphism
        ======================================== */
     
-    /* Light Theme - Warm, soft, sophisticated */
-    --background: 220 25% 97%;
-    --foreground: 222 35% 12%;
+    /* Light Theme - Softer, more refined */
+    --background: 220 20% 98%;
+    --foreground: 222 47% 11%;
+    
+    /* Card system with depth */
     --card: 0 0% 100%;
-    --card-foreground: 222 35% 12%;
+    --card-foreground: 222 47% 11%;
+    --card-elevated: 0 0% 100%;
+    --card-subtle: 220 20% 96%;
+    
+    /* Popover & overlays */
     --popover: 0 0% 100%;
-    --popover-foreground: 222 35% 12%;
-    --primary: 221 85% 55%;
+    --popover-foreground: 222 47% 11%;
+    
+    /* Primary - Vibrant but not aggressive */
+    --primary: 221 83% 53%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 20% 94%;
-    --secondary-foreground: 222 35% 12%;
-    --muted: 220 18% 96%;
-    --muted-foreground: 220 12% 45%;
-    --accent: 262 75% 58%;
+    
+    /* Secondary - Subtle support */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 47% 11%;
+    
+    /* Muted elements */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    
+    /* Accent - Purple for distinction */
+    --accent: 262 83% 58%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 51%;
+    
+    /* Destructive */
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 90%;
-    --input: 220 15% 90%;
-    --ring: 221 85% 55%;
-    --radius: 1.25rem;
+    
+    /* Borders - More visible for glass effect */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 221 83% 53%;
+    
+    /* Radius - Consistent rounding */
+    --radius: 1rem;
+    --radius-sm: 0.75rem;
+    --radius-md: 1rem;
+    --radius-lg: 1.25rem;
+    --radius-xl: 1.5rem;
+    --radius-2xl: 1.75rem;
     
     /* Extended semantic colors */
-    --card-elevated: 0 0% 100%;
-    --card-subtle: 220 25% 98%;
     --surface: 0 0% 100%;
     --surface-elevated: 0 0% 100%;
-    --surface-pressed: 220 20% 96%;
+    --surface-pressed: 220 20% 94%;
     
-    /* Status colors */
+    /* Status colors - Harmonized */
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
     --warning: 38 92% 50%;
@@ -46,20 +69,24 @@
     --info: 199 89% 48%;
     --info-foreground: 0 0% 100%;
     
-    /* Shadow opacities */
+    /* Glassmorphism - Enhanced for light mode */
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --glass-border-subtle: rgba(0, 0, 0, 0.05);
+    
+    /* Shadow system - Softer, more diffused */
     --shadow-color: 220 40% 2%;
-    --shadow-xs: 0 1px 2px hsl(var(--shadow-color) / 0.03);
-    --shadow-sm: 0 1px 3px hsl(var(--shadow-color) / 0.05), 0 1px 2px hsl(var(--shadow-color) / 0.03);
-    --shadow-md: 0 4px 6px -1px hsl(var(--shadow-color) / 0.06), 0 2px 4px -2px hsl(var(--shadow-color) / 0.04);
-    --shadow-lg: 0 10px 15px -3px hsl(var(--shadow-color) / 0.08), 0 4px 6px -4px hsl(var(--shadow-color) / 0.04);
-    --shadow-xl: 0 20px 25px -5px hsl(var(--shadow-color) / 0.1), 0 8px 10px -6px hsl(var(--shadow-color) / 0.05);
+    --shadow-xs: 0 1px 2px hsl(var(--shadow-color) / 0.04);
+    --shadow-sm: 0 1px 3px hsl(var(--shadow-color) / 0.06), 0 1px 2px hsl(var(--shadow-color) / 0.04);
+    --shadow-md: 0 4px 6px -1px hsl(var(--shadow-color) / 0.08), 0 2px 4px -2px hsl(var(--shadow-color) / 0.04);
+    --shadow-lg: 0 10px 15px -3px hsl(var(--shadow-color) / 0.1), 0 4px 6px -4px hsl(var(--shadow-color) / 0.05);
+    --shadow-xl: 0 20px 25px -5px hsl(var(--shadow-color) / 0.12), 0 8px 10px -6px hsl(var(--shadow-color) / 0.06);
     --shadow-2xl: 0 25px 50px -12px hsl(var(--shadow-color) / 0.25);
-    --shadow-inner: inset 0 2px 4px 0 hsl(var(--shadow-color) / 0.05);
     
     /* Glow effects */
-    --glow-primary: 0 0 40px hsl(var(--primary) / 0.25);
-    --glow-accent: 0 0 40px hsl(var(--accent) / 0.25);
-    --glow-success: 0 0 40px hsl(var(--success) / 0.25);
+    --glow-primary: 0 0 40px hsl(var(--primary) / 0.3);
+    --glow-accent: 0 0 40px hsl(var(--accent) / 0.3);
+    --glow-success: 0 0 40px hsl(var(--success) / 0.3);
     
     /* Border radius scale */
     --radius-xs: 0.5rem;
@@ -67,65 +94,79 @@
     --radius-md: 1rem;
     --radius-lg: 1.25rem;
     --radius-xl: 1.5rem;
-    --radius-2xl: 2rem;
+    --radius-2xl: 1.75rem;
     --radius-full: 9999px;
   }
 
   .dark {
-    /* Dark Theme - OLED-friendly, deep blacks with vibrant accents */
-    --background: 220 25% 4%;
-    --foreground: 210 30% 98%;
-    --card: 220 20% 7%;
-    --card-foreground: 210 30% 98%;
-    --popover: 220 20% 7%;
-    --popover-foreground: 210 30% 98%;
-    --primary: 217 90% 60%;
+    /* Dark Theme - Deeper, OLED-friendly */
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
+    
+    /* Card system - Elevated in dark */
+    --card: 222 47% 7%;
+    --card-foreground: 210 40% 98%;
+    --card-elevated: 222 47% 10%;
+    --card-subtle: 222 47% 6%;
+    
+    --popover: 222 47% 7%;
+    --popover-foreground: 210 40% 98%;
+    
+    /* Primary - Brighter in dark */
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 18% 12%;
-    --secondary-foreground: 210 30% 98%;
-    --muted: 220 18% 12%;
-    --muted-foreground: 220 12% 65%;
+    
+    --secondary: 222 47% 12%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 222 47% 12%;
+    --muted-foreground: 220 9% 64%;
+    
     --accent: 263 70% 55%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 18% 14%;
-    --input: 220 18% 14%;
-    --ring: 217 90% 60%;
+    --accent-foreground: 210 40% 98%;
     
-    /* Extended semantic colors - dark */
-    --card-elevated: 220 20% 9%;
-    --card-subtle: 220 20% 6%;
-    --surface: 220 20% 7%;
-    --surface-elevated: 220 20% 9%;
-    --surface-pressed: 220 20% 5%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
     
-    /* Status colors - dark */
-    --success: 142 76% 42%;
+    /* Borders - Subtle but present */
+    --border: 222 47% 16%;
+    --input: 222 47% 16%;
+    --ring: 217 91% 60%;
+    
+    /* Extended semantic - dark */
+    --surface: 222 47% 7%;
+    --surface-elevated: 222 47% 10%;
+    --surface-pressed: 222 47% 5%;
+    
+    /* Status - brighter in dark */
+    --success: 142 76% 45%;
     --success-foreground: 0 0% 100%;
     --warning: 38 92% 55%;
     --warning-foreground: 0 0% 100%;
     --info: 199 89% 55%;
     --info-foreground: 0 0% 100%;
     
-    /* Shadow opacities - dark */
-    --shadow-color: 220 40% 2%;
-    --shadow-xs: 0 1px 2px hsl(var(--shadow-color) / 0.2);
-    --shadow-sm: 0 1px 3px hsl(var(--shadow-color) / 0.25), 0 1px 2px hsl(var(--shadow-color) / 0.2);
-    --shadow-md: 0 4px 6px -1px hsl(var(--shadow-color) / 0.3), 0 2px 4px -2px hsl(var(--shadow-color) / 0.25);
-    --shadow-lg: 0 10px 15px -3px hsl(var(--shadow-color) / 0.35), 0 4px 6px -4px hsl(var(--shadow-color) / 0.3);
-    --shadow-xl: 0 20px 25px -5px hsl(var(--shadow-color) / 0.4), 0 8px 10px -6px hsl(var(--shadow-color) / 0.35);
-    --shadow-2xl: 0 25px 50px -12px hsl(var(--shadow-color) / 0.6);
-    --shadow-inner: inset 0 2px 4px 0 hsl(var(--shadow-color) / 0.3);
+    /* Glassmorphism - Enhanced for dark mode */
+    --glass-bg: rgba(15, 23, 42, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-border-subtle: rgba(255, 255, 255, 0.04);
     
-    /* Glow effects - dark */
-    --glow-primary: 0 0 60px hsl(var(--primary) / 0.35);
-    --glow-accent: 0 0 60px hsl(var(--accent) / 0.35);
-    --glow-success: 0 0 60px hsl(var(--success) / 0.35);
+    /* Shadows - More pronounced in dark */
+    --shadow-xs: 0 1px 2px hsl(var(--shadow-color) / 0.3);
+    --shadow-sm: 0 1px 3px hsl(var(--shadow-color) / 0.35), 0 1px 2px hsl(var(--shadow-color) / 0.3);
+    --shadow-md: 0 4px 6px -1px hsl(var(--shadow-color) / 0.4), 0 2px 4px -2px hsl(var(--shadow-color) / 0.35);
+    --shadow-lg: 0 10px 15px -3px hsl(var(--shadow-color) / 0.45), 0 4px 6px -4px hsl(var(--shadow-color) / 0.4);
+    --shadow-xl: 0 20px 25px -5px hsl(var(--shadow-color) / 0.5), 0 8px 10px -6px hsl(var(--shadow-color) / 0.45);
+    --shadow-2xl: 0 25px 50px -12px hsl(var(--shadow-color) / 0.7);
+    
+    /* Glow effects - Enhanced in dark */
+    --glow-primary: 0 0 60px hsl(var(--primary) / 0.4);
+    --glow-accent: 0 0 60px hsl(var(--accent) / 0.4);
+    --glow-success: 0 0 60px hsl(var(--success) / 0.4);
   }
-}
 
-@layer base {
+
+
   * {
     @apply border-border;
   }
@@ -140,68 +181,10 @@
     scroll-behavior: smooth;
   }
 }
-@tailwind components;
-@tailwind utilities;
 
-@layer base {
-  :root {
-    /* Light theme - 2024现代配色 */
-    --background: 220 20% 98%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 221 83% 53%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
-    --accent: 262 83% 58%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 221 83% 53%;
-    --radius: 1rem;
-  }
-
-  .dark {
-    /* Dark theme - 2024现代暗色 */
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
-    --card: 222 47% 9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 47% 9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 222 47% 14%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 222 47% 14%;
-    --muted-foreground: 220 9% 64%;
-    --accent: 263 70% 50%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 222 47% 16%;
-    --input: 222 47% 16%;
-    --ring: 217 91% 60%;
-    --radius: 1rem;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  }
-}
+/* ================================
+   2024 现代动画关键帧
+   ================================ */
 
 /* ================================
    2024 现代动画关键帧
@@ -588,69 +571,146 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-/* 悬停卡片效果 */
+/* ========================================
+   Enhanced Glassmorphism Cards 2025
+   ======================================== */
+
+/* Base glass card - refined */
+.card-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.dark .card-glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Enhanced hover card effect */
 .card-hover {
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(248, 250, 252, 0.75) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .card-hover:hover {
-  transform: translateY(-4px) scale(1.01);
+  transform: translateY(-3px) scale(1.005);
   box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.1),
-    0 12px 24px -12px rgba(0, 0, 0, 0.05),
-    0 0 0 1px rgba(59, 130, 246, 0.1);
-  border-color: rgba(59, 130, 246, 0.3);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
+    0 20px 40px -12px rgba(0, 0, 0, 0.12),
+    0 8px 16px -8px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.25);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.85) 100%);
 }
 
 .dark .card-hover {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.45) 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .dark .card-hover:hover {
   box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.5),
-    0 0 40px -10px rgba(59, 130, 246, 0.2),
-    0 0 0 1px rgba(59, 130, 246, 0.2);
-  border-color: rgba(59, 130, 246, 0.4);
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.6) 100%);
+    0 20px 40px -12px rgba(0, 0, 0, 0.5),
+    0 8px 16px -8px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.35);
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.55) 100%);
 }
 
-/* Bento Grid 卡片 */
+/* Bento Grid cards - Apple-inspired */
 .card-bento {
   border-radius: 24px;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.8));
-  border: 1px solid rgba(226, 232, 240, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.02),
-    0 4px 8px rgba(0, 0, 0, 0.02);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-bento:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.002);
   box-shadow:
-    0 20px 40px -15px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(59, 130, 246, 0.1);
+    0 12px 32px -8px rgba(0, 0, 0, 0.1),
+    0 16px 48px -12px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(59, 130, 246, 0.12);
   border-color: rgba(59, 130, 246, 0.2);
 }
 
 .dark .card-bento {
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.4));
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.35) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .dark .card-bento:hover {
   box-shadow:
-    0 20px 40px -15px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(59, 130, 246, 0.15);
+    0 12px 32px -8px rgba(0, 0, 0, 0.5),
+    0 16px 48px -12px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(59, 130, 246, 0.2);
   border-color: rgba(59, 130, 246, 0.25);
+}
+
+/* Feature card - prominent */
+.card-feature {
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.05),
+    0 16px 32px -8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-feature:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 24px 48px -12px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.dark .card-feature {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 16px 32px -8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.dark .card-feature:hover {
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.5),
+    0 24px 48px -12px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(99, 102, 241, 0.3);
+  border-color: rgba(99, 102, 241, 0.4);
 }
 
 /* ================================
