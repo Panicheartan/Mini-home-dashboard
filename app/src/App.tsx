@@ -24,13 +24,23 @@ import {
   Cpu,
   Wifi,
   Zap,
+  Sun,
+  CloudRain,
+  Snowflake,
+  Pickaxe,
+  Shovel,
+  Fish,
+  Axe,
+  Heart,
+  Battery,
+  Droplets,
 } from 'lucide-react';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeToggle } from './components/ThemeToggle';
 import { HeartHealth } from './components/stardew/HeartHealth';
 import { GoldDisplay } from './components/stardew/GoldDisplay';
-import { StardewTime } from './components/stardew/StardewTime';
+import { StardewTime, SimpleStardewTime } from './components/stardew/StardewTime';
 import { LoginPage } from './components/LoginPage';
 import { WebsitesPage } from './components/WebsitesPage';
 import { CategoryDetailPage } from './components/CategoryDetailPage';
@@ -40,9 +50,31 @@ import { usePinnedSites } from '@/hooks/usePinnedSites';
 import { useMemo, useState, useEffect } from 'react';
 import { getSiteColor, getSiteInitial } from '@/lib/utils';
 import type { NetworkDevice, AppService, Site } from '@/types';
-import { UnifiedBackground } from './components/UnifiedBackground';
 
-const APP_VERSION = '2.1.0';
+const APP_VERSION = '2.2.0-Stardew';
+
+// 季节配置
+const SEASONS = [
+  { name: '春', color: '#7CB342', icon: '🌸' },
+  { name: '夏', color: '#F9A825', icon: '☀️' },
+  { name: '秋', color: '#D84315', icon: '🍂' },
+  { name: '冬', color: '#42A5F5', icon: '❄️' },
+];
+
+// 天气类型
+const WEATHER_TYPES = [
+  { type: 'sunny', icon: Sun, label: '晴朗', color: '#FFD54F' },
+  { type: 'rainy', icon: CloudRain, label: '下雨', color: '#64B5F6' },
+  { type: 'snowy', icon: Snowflake, label: '下雪', color: '#90CAF9' },
+];
+
+// 工具栏项目
+const TOOLBAR_ITEMS = [
+  { icon: Pickaxe, name: '设备管理', color: '#8B7355', active: true },
+  { icon: Shovel, name: 'Docker服务', color: '#4A7C59' },
+  { icon: Axe, name: 'NAS管理', color: '#D4A574' },
+  { icon: Fish, name: '网站导航', color: '#5C4033' },
+];
 
 // Network devices
 const networkDevices: NetworkDevice[] = [
@@ -85,238 +117,276 @@ const macStudioApps: AppService[] = [
   { name: 'OpenCode', address: '192.168.1.102:8080', description: 'AI编码助手', icon: Cpu, color: 'from-cyan-600 to-blue-600', href: 'http://192.168.1.102:8080' },
 ];
 
-// Animation wrapper component
-function AnimatedCard({ children, index, className = '' }: { children: React.ReactNode; index: number; className?: string }) {
-  const [isVisible, setIsVisible] = useState(false);
+// 获取当前季节
+function getCurrentSeason() {
+  const month = new Date().getMonth();
+  const seasonIndex = Math.floor(month / 3) % 4;
+  return SEASONS[seasonIndex];
+}
+
+// 获取模拟天气
+function getWeather() {
+  const hour = new Date().getHours();
+  if (hour < 6 || hour > 20) return WEATHER_TYPES[0]; // 晴天
+  return WEATHER_TYPES[0]; // 默认晴天
+}
+
+// 顶部状态栏组件
+function StatusBar() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  const season = getCurrentSeason();
+  const weather = getWeather();
+  const WeatherIcon = weather.icon;
   
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), index * 50);
-    return () => clearTimeout(timer);
-  }, [index]);
+  const [energy, setEnergy] = useState(95);
+  const [health, setHealth] = useState(100);
+
+  // 计算总金币
+  const totalGold = useMemo(() => {
+    return (networkDevices.length * 100) + (dockerApps.length * 50) + (nasApps.length * 30) + (macStudioApps.length * 40);
+  }, []);
 
   return (
+    <div className={`stardew-dialog-header px-4 py-3 flex items-center justify-between`}>
+      {/* 左侧：日期和季节 */}
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl">{season.icon}</span>
+          <div className="flex flex-col">
+            <span className="text-sm font-bold text-[#5C4033] dark:text-[#D4C4A8]" style={{ textShadow: '1px 1px 0 rgba(0,0,0,0.1)' }}>
+              {season.name}季
+            </span>
+            <SimpleStardewTime />
+          </div>
+        </div>
+        
+        {/* 分隔线 */}
+        <div className={`w-px h-8 ${isDark ? 'bg-[#5C4A3D]' : 'bg-[#8B7355]/50'}`} />
+        
+        {/* 天气 */}
+        <div className="flex items-center gap-2">
+          <WeatherIcon className="w-5 h-5" style={{ color: weather.color }} />
+          <span className="text-sm text-[#5C4033] dark:text-[#D4C4A8]">{weather.label}</span>
+        </div>
+      </div>
+
+      {/* 中间：金币 */}
+      <GoldDisplay amount={totalGold} size="md" />
+
+      {/* 右侧：能量和生命值 */}
+      <div className="flex items-center gap-4">
+        {/* 能量条 */}
+        <div className="flex items-center gap-2">
+          <Zap className="w-4 h-4 text-yellow-500" />
+          <div className="w-20 h-3 bg-[#D4C4A8] dark:bg-[#2A2520] rounded-sm border-2 border-[#8B7355] overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-yellow-400 to-yellow-500 transition-all duration-500"
+              style={{ width: `${energy}%` }}
+            />
+          </div>
+        </div>
+        
+        {/* 生命值 */}
+        <div className="flex items-center gap-2">
+          <Heart className="w-4 h-4 text-red-500 fill-red-500" />
+          <HeartHealth health={health} size="sm" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 背包格子组件
+function InventorySlot({ 
+  children, 
+  className = '', 
+  selected = false,
+  onClick,
+  tooltip
+}: { 
+  children?: React.ReactNode; 
+  className?: string;
+  selected?: boolean;
+  onClick?: () => void;
+  tooltip?: string;
+}) {
+  return (
     <div
-      className={`transition-all duration-500 ease-out ${className} ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-      }`}
-      style={{ transitionDelay: `${index * 30}ms` }}
+      onClick={onClick}
+      title={tooltip}
+      className={`inventory-slot relative flex items-center justify-center p-2 cursor-pointer transition-all duration-100 ${selected ? 'selected' : ''} ${className}`}
     >
       {children}
     </div>
   );
 }
 
-// Device card - unified spacing and sizing
-function DeviceCard({ device, index }: { device: NetworkDevice; index: number }) {
+// 设备卡片（格子形式）
+function DeviceInventoryItem({ device, index }: { device: NetworkDevice; index: number }) {
   const Icon = device.icon;
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <AnimatedCard index={index}>
-      <a
-        href={device.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`card-hover group relative flex items-center gap-4 p-4 rounded-2xl overflow-hidden hover:-translate-y-0.5`}
-      >
-        {/* Gradient overlay on hover */}
-        <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-          isDark ? 'bg-gradient-to-r from-slate-800/50 to-transparent' : 'bg-gradient-to-r from-slate-50/50 to-transparent'
-        }`} />
-        
-        {/* Icon container - unified size */}
-        <div className={`relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${device.color} shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300`}>
-          <Icon className="h-6 w-6 text-white" />
-          {/* Status indicator */}
-          <div className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-white dark:border-slate-900" />
-        </div>
-        
-        <div className="relative flex-1 min-w-0">
-          <h3 className={`text-sm font-semibold leading-tight truncate ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
+    <a
+      href={device.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <InventorySlot selected={isHovered} tooltip={`${device.name} - ${device.description}`}>
+        <div className="flex flex-col items-center gap-1 w-full">
+          <div className={`w-10 h-10 rounded flex items-center justify-center bg-gradient-to-br ${device.color}`}>
+            <Icon className="w-5 h-5 text-white" />
+          </div>
+          <span className="text-xs font-bold text-[#5C4033] dark:text-[#D4C4A8] truncate w-full text-center">
             {device.name}
-          </h3>
-          <p className={`text-xs leading-tight truncate mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-            {device.description}
-          </p>
-          <p className={`text-xs font-mono leading-tight truncate mt-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+          </span>
+          <span className="text-[10px] text-[#8B7355] dark:text-[#8B7355] truncate w-full text-center">
             {device.address}
-          </p>
+          </span>
         </div>
-        
-        {/* Arrow indicator */}
-        <div className={`opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0 ${
-          isDark ? 'text-slate-400' : 'text-slate-400'
-        }`}>
-          <Zap className="h-4 w-4" />
-        </div>
-      </a>
-    </AnimatedCard>
+      </InventorySlot>
+    </a>
   );
 }
 
-// App card - unified sizing and spacing
-function AppCard({ app, index }: { app: AppService; index: number }) {
+// 应用卡片（格子形式）
+function AppInventoryItem({ app, index }: { app: AppService; index: number }) {
   const Icon = app.icon;
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <AnimatedCard index={index}>
-      <a
-        href={app.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`card-hover group relative flex items-center gap-3 p-4 rounded-xl overflow-hidden hover:-translate-y-0.5`}
-      >
-        <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-          isDark ? 'bg-gradient-to-r from-slate-800/50 to-transparent' : 'bg-gradient-to-r from-slate-50/50 to-transparent'
-        }`} />
-        
-        <div className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${app.color} shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300`}>
-          <Icon className="h-5 w-5 text-white" />
-        </div>
-        
-        <div className="relative flex-1 min-w-0">
-          <h3 className={`text-sm font-medium leading-tight truncate ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
+    <a
+      href={app.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <InventorySlot selected={isHovered} tooltip={`${app.name} - ${app.description}`}>
+        <div className="flex flex-col items-center gap-1 w-full">
+          <div className={`w-9 h-9 rounded flex items-center justify-center bg-gradient-to-br ${app.color}`}>
+            <Icon className="w-4 h-4 text-white" />
+          </div>
+          <span className="text-xs font-bold text-[#5C4033] dark:text-[#D4C4A8] truncate w-full text-center">
             {app.name}
-          </h3>
-          <p className={`text-xs leading-tight truncate mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-            {app.description}
-          </p>
+          </span>
         </div>
-      </a>
-    </AnimatedCard>
+      </InventorySlot>
+    </a>
   );
 }
 
-// Site card - consistent compact layout
-function SiteCard({ site, categoryId, index }: { site: Site; categoryId: string; index: number }) {
+// 网站卡片（格子形式）
+function SiteInventoryItem({ site, categoryId, index }: { site: Site; categoryId: string; index: number }) {
   const color = getSiteColor(site.url);
   const { isPinned, pinSite, unpinSite } = usePinnedSites();
   const pinned = isPinned(site.url, categoryId);
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <AnimatedCard index={index}>
-      <div className="group relative">
-        <a
-          href={site.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`card-hover flex items-center gap-3 p-3 rounded-xl hover:-translate-y-0.5`}
-        >
-          <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${color} shadow-md`}>
-            <span className="text-xs font-bold text-white">{getSiteInitial(site.name)}</span>
+    <div className="relative group">
+      <a
+        href={site.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <InventorySlot selected={isHovered} tooltip={site.name}>
+          <div className="flex flex-col items-center gap-1 w-full">
+            <div className={`w-9 h-9 rounded flex items-center justify-center bg-gradient-to-br ${color}`}>
+              <span className="text-sm font-bold text-white">{getSiteInitial(site.name)}</span>
+            </div>
+            <span className="text-[10px] font-bold text-[#5C4033] dark:text-[#D4C4A8] truncate w-full text-center">
+              {site.name}
+            </span>
           </div>
-          <span className={`text-sm leading-tight truncate ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
-            {site.name}
-          </span>
-        </a>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            if (pinned) unpinSite(site.url, categoryId);
-            else pinSite({ name: site.name, url: site.url, categoryId, subCategoryId: '' });
-          }}
-          className={`absolute top-2 right-2 p-1.5 rounded-lg transition-all duration-200 ${
-            pinned
-              ? 'text-indigo-500 opacity-100'
-              : `${isDark ? 'text-slate-500 hover:text-slate-300' : 'text-slate-400 hover:text-slate-600'} opacity-0 group-hover:opacity-100`
-          }`}
-        >
-          {pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
-        </button>
-      </div>
-    </AnimatedCard>
-  );
-}
-
-// Section header component - unified spacing
-function SectionHeader({ icon: Icon, title, count, className = '' }: { icon: React.ElementType; title: string; count?: number; className?: string }) {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
-
-  return (
-    <div className={`flex items-center gap-3 mb-4 ${className}`}>
-      <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-        isDark 
-          ? 'bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50' 
-          : 'bg-gradient-to-br from-slate-100 to-white border border-slate-200/80'
-      } shadow-sm`}>
-        <Icon className={`h-4 w-4 ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`} />
-      </div>
-      <div className="flex items-center gap-2">
-        <h2 className={`text-sm font-semibold ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>{title}</h2>
-        {count !== undefined && (
-          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-            isDark ? 'bg-slate-800/80 text-slate-400 border border-slate-700/50' : 'bg-slate-100 text-slate-500 border border-slate-200/80'
-          }`}>
-            {count}
-          </span>
-        )}
-      </div>
+        </InventorySlot>
+      </a>
+      {/* 固定按钮 */}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          if (pinned) unpinSite(site.url, categoryId);
+          else pinSite({ name: site.name, url: site.url, categoryId, subCategoryId: '' });
+        }}
+        className={`absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center transition-all ${
+          pinned 
+            ? 'bg-amber-500 text-white opacity-100' 
+            : 'bg-[#8B7355] text-white opacity-0 group-hover:opacity-100'
+        }`}
+        style={{ fontSize: '10px' }}
+      >
+        {pinned ? '★' : '☆'}
+      </button>
     </div>
   );
 }
 
-// Stats card component - unified sizing
-function StatsCard({ icon: Icon, label, value, color, index }: {
-  icon: React.ElementType;
-  label: string;
-  value: string;
-  color: string;
-  index: number;
-}) {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
-  
+// 背包面板标题
+function InventoryPanelTitle({ icon: Icon, title, count }: { icon: React.ElementType; title: string; count?: number }) {
   return (
-    <AnimatedCard index={index}>
-      <div className="card-hover group p-4 rounded-xl">
-        <div className="flex items-center gap-3">
-          <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${color} shadow-md group-hover:shadow-lg transition-all duration-300`}>
-            <Icon className="h-5 w-5 text-white" />
-          </div>
-          <div>
-            <p className={`text-xs leading-tight ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{label}</p>
-            <p className={`text-lg font-bold leading-tight mt-0.5 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{value}</p>
-          </div>
-        </div>
-      </div>
-    </AnimatedCard>
+    <div className="flex items-center gap-2 mb-3 px-1">
+      <Icon className="w-4 h-4 text-[#8B7355] dark:text-[#D4A574]" />
+      <span className="text-sm font-bold text-[#5C4033] dark:text-[#D4C4A8]">{title}</span>
+      {count !== undefined && (
+        <span className="text-xs px-1.5 py-0.5 rounded bg-[#D4C4A8] dark:bg-[#3A3530] text-[#8B7355] dark:text-[#A68B6A]">
+          {count}
+        </span>
+      )}
+    </div>
   );
 }
 
-// Main dashboard
-function Dashboard() {
-  const { logout } = useAuth();
+// 底部工具栏
+function BottomToolbar() {
+  const [activeTool, setActiveTool] = useState(0);
+
+  return (
+    <div className="stardew-toolbar px-4 py-2 flex items-center justify-center gap-2">
+      {TOOLBAR_ITEMS.map((tool, index) => {
+        const Icon = tool.icon;
+        const isActive = activeTool === index;
+        return (
+          <button
+            key={index}
+            onClick={() => setActiveTool(index)}
+            className={`toolbar-slot ${isActive ? 'active' : ''}`}
+            title={tool.name}
+          >
+            <Icon className="w-5 h-5" style={{ color: isActive ? '#fff' : tool.color }} />
+            {isActive && (
+              <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs whitespace-nowrap px-2 py-0.5 rounded bg-[#5C4033] text-white">
+                {tool.name}
+              </span>
+            )}
+          </button>
+        );
+      })}
+      
+      {/* 分隔 */}
+      <div className="w-px h-8 bg-[#8B7355]/30 mx-2" />
+      
+      {/* 系统按钮 */}
+      <button className="toolbar-slot" title="设置">
+        <Settings className="w-5 h-5 text-[#8B7355]" />
+      </button>
+    </div>
+  );
+}
+
+// 主面板
+function MainPanel() {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
-  const [currentDate] = useState(new Date().toLocaleDateString('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    weekday: 'long'
-  }));
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('zh-CN', {
-    hour: '2-digit',
-    minute: '2-digit'
-  }));
-
-  // Update time every minute
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString('zh-CN', {
-        hour: '2-digit',
-        minute: '2-digit'
-      }));
-    }, 60000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Get all sites for favorites
+  
+  // 获取所有网站
   const allSites = useMemo(() => {
     const sites: { site: Site; categoryId: string }[] = [];
     allCategories.forEach(cat => {
@@ -329,302 +399,111 @@ function Dashboard() {
     return sites;
   }, []);
 
-  // Calculate totals for stats
-  const totalDevices = networkDevices.length;
-  const totalDockerApps = dockerApps.length;
-  const totalApps = nasApps.length + macStudioApps.length;
+  return (
+    <div className="flex-1 overflow-auto p-4">
+      {/* 背包区域 */}
+      <div className="stardew-inventory-panel p-4">
+        {/* 网络设备背包 */}
+        <div className="mb-6">
+          <InventoryPanelTitle icon={Router} title="网络设备" count={networkDevices.length} />
+          <div className="inventory-grid">
+            {networkDevices.map((device, index) => (
+              <DeviceInventoryItem key={device.name} device={device} index={index} />
+            ))}
+          </div>
+        </div>
+
+        {/* Docker服务背包 */}
+        <div className="mb-6">
+          <InventoryPanelTitle icon={Layers} title="Docker 服务" count={dockerApps.length} />
+          <div className="inventory-grid">
+            {dockerApps.map((app, index) => (
+              <AppInventoryItem key={app.name} app={app} index={index} />
+            ))}
+          </div>
+        </div>
+
+        {/* NAS和Mac Studio背包（并排） */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <InventoryPanelTitle icon={HardDrive} title="NAS 应用" count={nasApps.length} />
+            <div className="inventory-grid">
+              {nasApps.map((app, index) => (
+                <AppInventoryItem key={app.name} app={app} index={index} />
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <InventoryPanelTitle icon={Monitor} title="Mac Studio" count={macStudioApps.length} />
+            <div className="inventory-grid">
+              {macStudioApps.map((app, index) => (
+                <AppInventoryItem key={app.name} app={app} index={index} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* 常用网站背包 */}
+        <div className="mt-6">
+          <div className="flex items-center justify-between mb-3 px-1">
+            <InventoryPanelTitle icon={Globe} title="常用网站" count={allSites.length} />
+            <Link to="/websites" className="text-xs text-[#4A7C59] hover:text-[#5A8C69] font-medium">
+              查看全部 →
+            </Link>
+          </div>
+          <div className="inventory-grid">
+            {allSites.slice(0, 12).map(({ site, categoryId }, index) => (
+              <SiteInventoryItem key={site.url} site={site} categoryId={categoryId} index={index} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 主仪表板
+function Dashboard() {
+  const { logout } = useAuth();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
-    <UnifiedBackground>
-      <div className="min-h-screen">
-        {/* Header - enhanced with glass effect */}
-        <header className={`sticky top-0 z-50 backdrop-blur-xl border-b ${
-          isDark 
-            ? 'bg-slate-950/80 border-slate-800/50' 
-            : 'bg-white/80 border-slate-200/80'
-        }`}>
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/20">
-                  <Wifi className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h1 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    家庭网络
-                  </h1>
-                  <div className="flex items-center gap-2">
-                    <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                      {currentDate}
-                    </p>
-                    <span className={`text-xs ${isDark ? 'text-slate-600' : 'text-slate-300'}`}>·</span>
-                    <p className={`text-xs font-mono ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>
-                      {currentTime}
-                    </p>
-                  </div>
-                </div>
-              </div>
+    <div className="stardew-game-container min-h-screen flex flex-col">
+      {/* 游戏背景 */}
+      <div className="stardew-bg-pattern absolute inset-0 pointer-events-none" />
+      
+      {/* 顶部状态栏 */}
+      <header className="relative z-10">
+        <StatusBar />
+      </header>
 
-              <div className="flex items-center gap-2">
-                <Link to="/websites">
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className={`gap-2 rounded-lg ${
-                      isDark 
-                        ? 'text-slate-300 hover:text-indigo-400 hover:bg-slate-800/80' 
-                        : 'text-slate-600 hover:text-indigo-600 hover:bg-slate-100/80'
-                    }`}
-                  >
-                    <Globe className="h-4 w-4" />
-                    <span className="hidden sm:inline">网址导航</span>
-                  </Button>
-                </Link>
-                <div className={`w-px h-6 ${isDark ? 'bg-slate-700/50' : 'bg-slate-200/80'}`} />
-                <ThemeToggle />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={logout}
-                  className={`gap-2 rounded-lg ${
-                    isDark 
-                      ? 'text-slate-300 hover:text-red-400 hover:bg-slate-800/80' 
-                      : 'text-slate-600 hover:text-red-600 hover:bg-slate-100/80'
-                  }`}
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span className="hidden sm:inline">退出</span>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </header>
+      {/* 主内容区 */}
+      <MainPanel />
 
-        {/* Main Content - Bento Grid Layout */}
-        <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Stats Overview */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-            <StatsCard 
-              icon={LayoutGrid} 
-              label="网络设备" 
-              value={totalDevices.toString()} 
-              color="from-blue-500 to-cyan-500"
-              index={0}
-            />
-            <StatsCard 
-              icon={Layers} 
-              label="Docker服务" 
-              value={totalDockerApps.toString()} 
-              color="from-violet-500 to-purple-500"
-              index={1}
-            />
-            <StatsCard 
-              icon={Monitor} 
-              label="应用服务" 
-              value={totalApps.toString()} 
-              color="from-emerald-500 to-teal-500"
-              index={2}
-            />
-            <StatsCard 
-              icon={Globe} 
-              label="常用网站" 
-              value={allSites.length.toString()} 
-              color="from-pink-500 to-rose-500"
-              index={3}
-            />
-          </div>
+      {/* 底部工具栏 */}
+      <footer className="relative z-10 pb-4">
+        <BottomToolbar />
+        
+        {/* 版本信息 */}
+        <div className="text-center mt-2">
+          <span className="text-[10px] text-[#8B7355] dark:text-[#5C4A3D]">
+            Mini-Home Dashboard v{APP_VERSION}
+          </span>
+        </div>
+      </footer>
 
-          {/* Stardew Valley Status Bar */}
-          <div className={`flex flex-wrap items-center justify-between gap-4 p-4 mb-8 rounded-2xl border-2 ${
-            isDark 
-              ? 'bg-gradient-to-r from-amber-900/30 to-orange-900/30 border-amber-700/50' 
-              : 'bg-gradient-to-r from-amber-100 to-orange-100 border-amber-300'
-          }`}>
-            <div className="flex items-center gap-4">
-              <GoldDisplay amount={totalDockerApps * 100 + totalApps * 50} />
-              <div className={`w-px h-8 ${isDark ? 'bg-amber-700/50' : 'bg-amber-300'}`} />
-              <StardewTime />
-            </div>
-            <div className="flex items-center gap-4">
-              <span className={`text-sm ${isDark ? 'text-amber-300' : 'text-amber-800'}`}>系统健康度</span>
-              <HeartHealth health={95} size="md" />
-            </div>
-          </div>
-
-          {/* Main Bento Grid */}
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-            {/* Left column - Network Devices (xl:col-span-3) */}
-            <div className="xl:col-span-3 space-y-6">
-              <section className="card-bento p-5">
-                <SectionHeader icon={LayoutGrid} title="网络设备" count={networkDevices.length} />
-                <div className="space-y-3">
-                  {networkDevices.map((device, index) => (
-                    <DeviceCard key={device.name} device={device} index={index} />
-                  ))}
-                </div>
-              </section>
-
-              {/* Quick Links - Compact */}
-              <section className="card-bento p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <SectionHeader icon={Globe} title="常用网站" className="mb-0" />
-                  <Link to="/websites" className={`text-xs font-medium ${
-                    isDark ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-500'
-                  }`}>
-                    全部 →
-                  </Link>
-                </div>
-                <div className="space-y-2">
-                  {allSites.slice(0, 6).map(({ site, categoryId }, index) => (
-                    <SiteCard key={site.url} site={site} categoryId={categoryId} index={index} />
-                  ))}
-                </div>
-              </section>
-            </div>
-
-            {/* Middle column - Docker Apps (xl:col-span-5) */}
-            <div className="xl:col-span-5 space-y-6">
-              <section className="card-bento p-5">
-                <SectionHeader icon={Layers} title="Docker 服务" count={dockerApps.length} />
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {dockerApps.map((app, index) => (
-                    <AppCard key={app.name} app={app} index={index} />
-                  ))}
-                </div>
-              </section>
-
-              {/* NAS & Mac Studio - Side by side */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <section className="card-bento p-5">
-                  <SectionHeader icon={HardDrive} title="NAS" count={nasApps.length} />
-                  <div className="space-y-2">
-                    {nasApps.map((app, index) => (
-                      <AppCard key={app.name} app={app} index={index} />
-                    ))}
-                  </div>
-                </section>
-
-                <section className="card-bento p-5">
-                  <SectionHeader icon={Monitor} title="Mac Studio" count={macStudioApps.length} />
-                  <div className="space-y-2">
-                    {macStudioApps.map((app, index) => (
-                      <AppCard key={app.name} app={app} index={index} />
-                    ))}
-                  </div>
-                </section>
-              </div>
-            </div>
-
-            {/* Right column - Extended Quick Links or additional info (xl:col-span-4) */}
-            <div className="xl:col-span-4 space-y-6">
-              {/* System Status Panel */}
-              <section className="card-feature p-5">
-                <SectionHeader icon={Activity} title="系统状态" />
-                <div className="space-y-4">
-                  <div className={`p-4 rounded-2xl ${
-                    isDark ? 'bg-slate-800/50' : 'bg-slate-100/80'
-                  }`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className={`text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>网络状态</span>
-                      <span className="flex items-center gap-1.5 text-xs text-emerald-500 font-medium">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        正常
-                      </span>
-                    </div>
-                    <div className={`h-2 rounded-full ${isDark ? 'bg-slate-700' : 'bg-slate-200'} overflow-hidden`}>
-                      <div className="h-full w-[95%] bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full" />
-                    </div>
-                  </div>
-                  
-                  <div className={`p-4 rounded-2xl ${
-                    isDark ? 'bg-slate-800/50' : 'bg-slate-100/80'
-                  }`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className={`text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>存储空间</span>
-                      <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>72%</span>
-                    </div>
-                    <div className={`h-2 rounded-full ${isDark ? 'bg-slate-700' : 'bg-slate-200'} overflow-hidden`}>
-                      <div className="h-full w-[72%] bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" />
-                    </div>
-                  </div>
-                  
-                  <div className={`p-4 rounded-2xl ${
-                    isDark ? 'bg-slate-800/50' : 'bg-slate-100/80'
-                  }`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className={`text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>服务运行</span>
-                      <span className={`text-xs ${isDark ? 'text-indigo-400' : 'text-indigo-600'} font-medium`}>
-                        {dockerApps.length + nasApps.length + macStudioApps.length} 个服务
-                      </span>
-                    </div>
-                    <div className="flex gap-1.5 mt-2">
-                      {Array.from({ length: 8 }).map((_, i) => (
-                        <div 
-                          key={i} 
-                          className={`flex-1 h-8 rounded-lg ${
-                            isDark 
-                              ? 'bg-gradient-to-b from-indigo-500/30 to-indigo-600/10 border border-indigo-500/20' 
-                              : 'bg-gradient-to-b from-indigo-500/20 to-indigo-600/5 border border-indigo-500/10'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* More Quick Links */}
-              <section className="card-bento p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <SectionHeader icon={Globe} title="更多网站" className="mb-0" />
-                  <Link to="/websites" className={`text-xs font-medium ${
-                    isDark ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-500'
-                  }`}>
-                    全部 →
-                  </Link>
-                </div>
-                <div className="space-y-2">
-                  {allSites.slice(6, 14).map(({ site, categoryId }, index) => (
-                    <SiteCard key={site.url} site={site} categoryId={categoryId} index={index} />
-                  ))}
-                </div>
-              </section>
-            </div>
-          </div>
-        </main>
-
-        {/* Footer - enhanced */}
-        <footer className={`border-t mt-12 ${
-          isDark ? 'border-slate-800/50' : 'border-slate-200/80'
-        }`}>
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className={`flex flex-col sm:flex-row items-center justify-between gap-4 text-sm ${
-              isDark ? 'text-slate-400' : 'text-slate-500'
-            }`}>
-              <div className="flex items-center gap-3">
-                <div className={`h-8 w-8 rounded-lg flex items-center justify-center ${
-                  isDark ? 'bg-slate-800/80' : 'bg-slate-100'
-                }`}>
-                  <Settings className="h-4 w-4" />
-                </div>
-                <div>
-                  <p className={`font-medium ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
-                    家庭网络仪表板
-                  </p>
-                  <p className="text-xs">v{APP_VERSION} · {currentDate}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className="flex items-center gap-2 text-xs">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  系统正常运行
-                </span>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </div>
-    </UnifiedBackground>
+      {/* 退出按钮（悬浮） */}
+      <button
+        onClick={logout}
+        className="fixed top-4 right-4 z-50 stardew-btn-sm flex items-center gap-1 px-3 py-1.5"
+        title="退出登录"
+      >
+        <LogOut className="w-4 h-4" />
+        <span className="text-xs">退出</span>
+      </button>
+    </div>
   );
 }
 
