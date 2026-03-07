@@ -79,8 +79,11 @@ const macStudioApps: AppService[] = [
   { name: 'Gitea', address: '192.168.1.102:3001', description: '私有Git仓库', icon: Globe, color: 'from-blue-500 to-cyan-500', href: 'http://192.168.1.102:3001' },
   { name: 'Camunda', address: '192.168.1.102:8091', description: 'BPM工作流', icon: Workflow, color: 'from-orange-500 to-red-500', href: 'http://192.168.1.102:8091' },
   { name: 'Flowable', address: '192.168.1.102:8092', description: '工作流引擎', icon: Activity, color: 'from-green-500 to-emerald-500', href: 'http://192.168.1.102:8092' },
-  { name: 'Second Brain', address: '192.168.1.102:8080', description: '知识图谱', icon: Monitor, color: 'from-pink-500 to-rose-500', href: 'http://192.168.1.102:8080' },
   { name: 'ChatDev', address: '192.168.1.102:5173', description: 'AI开发助手', icon: Container, color: 'from-cyan-500 to-teal-500', href: 'http://192.168.1.102:5173' },
+  // Second Brain & OpenCode
+  { name: 'Second Brain', address: '192.168.1.102:3456', description: '知识库系统', icon: LayoutGrid, color: 'from-pink-500 to-rose-500', href: 'http://192.168.1.102:3456' },
+  { name: 'Mission Control', address: '192.168.1.102:3456/mission-control-live', description: '系统监控仪表板', icon: Gauge, color: 'from-indigo-500 to-violet-500', href: 'http://192.168.1.102:3456/mission-control-live' },
+  { name: 'OpenCode', address: '192.168.1.102:8080', description: 'AI编码助手', icon: Monitor, color: 'from-cyan-600 to-blue-600', href: 'http://192.168.1.102:8080' },
 ];
 
 // Device card
